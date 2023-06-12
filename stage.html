@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+    <head>
+       
+        <title>Fujitsu Serie web API</title>
+        <link rel="icon" type="image/x-icon" href="symbolmark.png">
+        <style type="text/css">
+            .container{
+                background-color: rgba(100, 100, 100, 0.3);
+                border:thick solid #6b6b6b;
+                padding:50px;
+                margin:20px 20px 0 20px;
+                width:1000px;
+                height:600px;
+                display:flex;
+                border-radius:20px;
+                
+            }
+            .showmessage{
+                display:flex;
+                flex-wrap:wrap;
+                justify-content:flex-start;
+                margin:0 20px 20px;
+                text-align:left;
+                font-size:14px;
+                font-family:verdana,Arial, Helvetica, sans-serif;
+                color:red;
+                border:1px solid #ddd;
+            }
+        </style>
+        <script src="Scripts/jquery-1.6.4.min.js">
+        </script>
+        <script src="Scripts/jquery.signalR-2.2.3.min.js" >
+        </script>
+        <script src="http://localhost:8087/signalr/hubs"></script>
+        <script type="text/javascript" src="Resources/fujitsu.fiscanner.initiate.js"></script>
+
+
+
+    </head>
+    <body>
+        <div class="container" style="display:flex;flex-wrap:wrap;justify-content:flex-start;">
+        <div style="margin-right:10px;margin-top:10px;">
+            <style type="text/css">
+                table{
+                    border-collapse:collapse;
+                    border-spacing:0;
+                }
+                table thead tr th{
+                    font-weight:bold;
+                    background-color:#fa7373;
+                }
+                table td,table th{
+                    font-size:14px;
+                    text-align:left;
+                    font-family:verdana,Arial, Helvetica, sans-serif;
+                }
+                div .alignleft
+                {
+                    text-align:left;
+                }
+                table.gridtable th{
+                    height:20px;
+                    border:1px solid #A6A6A6;
+                    border-width:1px;
+                    padding:8px;
+                }
+                table.gridtable{
+                    color:#ffffff;
+                    border-width:1px;
+                    border-color:#666666;
+                    border-collapse:collapse;
+                }
+                table.gridtable th{
+                    height:20px;
+                    border:1px solid #A6A6A6;
+                    border-width:1px;
+                    padding:8px;
+                    border-style:solid;
+                    border-color: #666666;
+                    background-color:transparent;
+                    text-align:center;
+                }
+                table.gridtable td {
+                    height:20px;
+                    border:1px solid #A6A6A6;
+                    border-width:1px;
+                    padding: 8px;
+                    border-style:solid;
+                    border-color:#666666;
+                    background-color:transparent;
+                    text-align:left;
+                }
+                table.resultgridtable{
+                    color:#ffffff;
+                    border-width:0px;
+                    border-color:#666666;
+                    border-collapse:collapse;
+                }
+                table.resultgridtable th{
+                    height: 10px;
+                    border-width:0px;
+                    padding: 5px;
+                    border-style:none;
+                    border-color:#666666;
+                    background-color:transparent;
+                    text-align:left;
+                }
+                table.resultgridtable td {
+                    height:10px;
+                    border-width:0px;
+                    padding:5px;
+                    border-style:none;
+                    border-color:#666666;
+                    background-color:transparent;
+                    text-align:left;
+                }
+
+                .resultlist{
+                    overflow:scroll;
+                    width:330px;
+                    height:410px;
+                    background-color:transparent;
+                    border:1px solid #dddddd ;
+                    padding:0;
+                }
+                input[type="range"] {
+  -webkit-appearance : none; 
+  width: auto; 
+  height: 8px;
+  background: #ddd; 
+}
+
+#slider1::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  background: url(Brightness.png);
+  background-size: cover;
+  cursor: pointer;
+}
+
+#slider2::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  background: url(Contrast.png);
+  background-size: cover;
+  cursor: pointer;
+}
+
+body {
+    min-height: 100vh;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 1rem;
+    background-image:url(wallpaperflare.com_wallpaper\ \(3\).jpg);
+    background-size:cover;
+    overflow: hidden;
+
+}
+
+
+            </style>
+            <table class="gridtable">
+                <tbody>
+                    <tr>
+                        <th>
+                            PixelType
+                        </th>
+                        <td colspan="2">
+                            <select id="PixelType" >
+                                <option selected disabled >Choose pixel type</option>
+                                <option value="0">Black&amp;white</option>
+                                <option value="1">Grayscale</option>
+                                <option value="2" selected="selected">RGB</option>
+                                <option value="3">Automatic</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>PaperSupply</th>
+                        <td colspan="2">
+                            <select  id="PaperSupply">
+                                <option value="0">Flatbed</option>
+                                <option value="1" selected="selected">ADF</option>
+                                <option value="2">ADF(Duplex)</option>
+                                <option value="3">ADF(BackSide)</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Resolution</th>
+                        <td colspan="2">
+                            <select id="resolution">
+                                <option value="0">200</option>
+                                <option value="2" selected="selected">300</option>
+                                <option value="5">600</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>PaperSize</th>
+                        <td colspan="2">
+                            <select id="paperSize">
+                                <option value="0">A3</option>
+                                <option value="1" selected="selected">A4</option>
+                                <option value="2">A5</option>
+                                <option value="3">A6</option>
+                                <option value="4">B4(JIS)</option>
+                                <option value="5">B5(JIS)</option>
+                                <option value="6">B6(JIS)</option>
+                                <option value="7">Lettre</option>
+                                <option value="8">Legal</option>
+                                <option value="11">PostCard</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Rotation</th>
+                        <td colspan="2">
+                            <select id="rotation">
+                                <option value="0" selected="selected">None</option>
+                                <option value="1">R90</option>
+                                <option value="2">R180</option>
+                                <option value="3">R270</option>
+                                <option value="4">Automatic</option>
+                            </select>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Brightness</th>
+                        <td colspan="2">
+                            <div class="slidecontainer">
+                                <input  type="range" min="0" max="255" value="128" id="slider1" class="slider" oninput="this.nextElementSibling.value=this.value"  title="Between 1 (bright) and 255 (dark)">
+                                <output>128</output>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr> 
+                        <th>Contrast</th>
+                        <td colspan="2">
+                            <input type="range" min="0" max="255" value="128" id="slider2" class="slider" oninput="this.nextElementSibling.value=this.value" title="Between 1 (low) and 255 (high)">
+                            <output>128</output>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>threshold</th>
+                        <td colspan="2">
+                            <input type="range" min="-2" max="255" value="128" class="slider" oninput="this.nextElementSibling.value=this.value" title="alue in the range from -2 to 255">
+                            <output>128</output>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>FileType</th>
+                        <td colspan="2">
+                            <select id="fileType">
+                                <option value="0">BMP</option>
+                                <option value="1">TIFF</option>
+                                <option value="3" selected="selected">JPEG</option>
+                            </select>
+                        </td>
+                    </tr>
+                    
+                        <th>
+                            FileName
+                        </th>
+                        <td colspan="2">
+                            <input type="text" id="fileName" value="C:\temp\image" title="String that ends with NULL, including the absolute path name" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            FileCounter
+                        </th>
+                        <td colspan="2">
+                            <input type="number" style="text-align: right;" id="fileCounter" value="1" min="-1" max="65535" title="Value in the range from -1 and 0 to 65535" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:right;" colspan="3">
+                            <input type="button" id="btn_SelectSource" value="SelectSource" />
+                            <input type="button" id="btn_Scan" value="Scan" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="resultlist" style="margin-right:10px;margin-top:10px;">
+            <table id="output" class="resultgridtable">
+                <tbody>
+                    <tr>
+                        <th style="padding-right:20px;">
+                            No.
+                        </th>
+                        <th style="width:200px; padding-right:20px;">
+                            Files
+                        </th>
+                        <th>
+                            Base64
+                        </th>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="margin-right:10px;margin-top:10px;width:200px;height:200px">
+            <img id="image" src="largepreview.png" style='display:block; width:300px;height:400px;' title="Image scanned" />
+        </div>
+    </div>
+    <div class="showmessage">
+        <label id="messageContent"></label>
+    </div>
+</html>
